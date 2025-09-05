@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Chi tiết bác sĩ{% endblock %}
+{% block searchbar %}{% endblock %}
+{% block content %}
+<div class="container my-5">
+  <div class="row g-4">
+    <!-- Cột trái: Thông tin bác sĩ -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm p-3">
+        <div class="text-center">
+          <!-- Ảnh bác sĩ -->
+          <img src="{{ doctor.image_url or url_for('static', filename='default_doctor.png') }}" 
+               alt="{{ doctor.tenBacSi }}" 
+               class="rounded-circle mb-3 doctor-img"
+               style="width:120px;height:120px;object-fit:cover;">
+          
+          <h4>{{ doctor.tenBacSi }}</h4>
+          <p class="text-muted">{{ doctor.chuyenKhoa }}</p>
+          {% if doctor.kinhNghiem %}
+            <span class="badge bg-primary">{{ doctor.kinhNghiem }} năm kinh nghiệm</span>
+          {% endif %}
+          {% if doctor.diaChiPhongKham %}
+            <span class="badge bg-secondary">{{ doctor.diaChiPhongKham }}</span>
+          {% endif %}
+        </div>
+        <hr>
+        
+        <!-- Giới thiệu -->
+        <h6>👨‍⚕️ Giới thiệu</h6>
+        <p>{{ doctor.description or "Chưa có thông tin." }}</p>
+
+        <!-- Trình độ học vấn -->
+        <h6>🎓 Trình độ học vấn</h6>
+        <ul>
+          {% if doctor.education %}
+            {% for hv in doctor.education.split(";") %}
+              <li>{{ hv }}</li>
+            {% endfor %}
+          {% else %}
+            <li>Đang cập nhật</li>
+          {% endif %}
+        </ul>
+
+        <!-- Chứng chỉ -->
+        <h6>📜 Bằng cấp & Chứng chỉ</h6>
+        <ul>
+          {% if doctor.certifications %}
+            {% for cert in doctor.certifications.split(";") %}
+              <li>{{ cert }}</li>
+            {% endfor %}
+          {% else %}
+            <li>Chưa có dữ liệu</li>
+          {% endif %}
+        </ul>
+
+        <!-- Chức vụ -->
+        {% if doctor.chucVu %}
+          <h6>💼 Chức vụ</h6>
+          <p>{{ doctor.chucVu }}</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Cột phải: Đánh giá + Lịch làm việc -->
+    <div class="col-lg-8">
+      <!-- Đánh giá -->
+      <div class="card shadow-sm p-3 mb-4">
+        <h5>⭐ Đánh giá từ bệnh nhân</h5>
+        <h6 class="text-warning">Điểm trung bình: {{ avg_rating or 0 }} / 5</h6>
+        {% for review in reviews %}
+          <div class="border rounded p-2 mb-2">
+            <strong>{{ review.patient_name }}</strong> - {{ review.date }}
+            <p>{{ review.comment }}</p>
+            <span class="text-warning">{{ "⭐" * review.rating }}</span>
+          </div>
+        {% else %}
+          <p class="text-muted">Chưa có đánh giá nào.</p>
+        {% endfor %}
+      </div>
+
+      <!-- Lịch làm việc -->
+      <div class="mt-5">
+        <h4>Lịch làm việc</h4>
+        <div class="d-flex justify-content-center align-items-center my-3">
+          <a href="{{ url_for('doctor_detail', doctor_id=doctor.idBacSi, week_start=prev_week) }}" 
+             class="btn btn-outline-secondary me-3">&lt;</a>
+
+          <span>{{ week_label }}</span>
+
+          <a href="{{ url_for('doctor_detail', doctor_id=doctor.idBacSi, week_start=next_week) }}" 
+             class="btn btn-outline-secondary ms-3">&gt;</a>
+        </div>
+        <table class="table table-bordered text-center align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Giờ</th>
+              {% for d in days %}
+                <th>{{ d.strftime('%a %d/%m') }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for h in hours %}
+            <tr>
+              <td><strong>{{ "%02d:00"|format(h) }}</strong></td>
+              {% for d in days %}
+                {% if schedule_map.get(d) and h in schedule_map[d] %}
+                  <td class="bg-secondary text-white">Bận</td>
+                {% else %}
+                  <td></td>
+                {% endif %}
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

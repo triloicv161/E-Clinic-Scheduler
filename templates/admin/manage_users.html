@@ -1,0 +1,31 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Quản lý tài khoản{% endblock %}
+
+{% block content %}
+<h2>👥 Danh sách tài khoản</h2>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Tên đăng nhập</th>
+      <th>Họ tên</th>
+      <th>Quyền</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for u in users %}
+    <tr>
+      <td>{{ u.id }}</td>
+      <td>{{ u.username }}</td>
+      <td>{{ u.full_name }}</td>
+      <td>
+        <span class="badge {% if u.role == 'admin' %}bg-danger{% elif u.role == 'doctor' %}bg-primary{% else %}bg-secondary{% endif %}">
+          {{ u.role }}
+        </span>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

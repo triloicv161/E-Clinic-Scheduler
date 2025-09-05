@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Đặt lịch hẹn{% endblock %}
+{% block searchbar %}{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <h2 class="mb-4">Đặt lịch hẹn</h2>
+  <form>
+    <div class="mb-3">
+      <label class="form-label">Chọn bác sĩ</label>
+      <select class="form-select">
+        <option>-- Chọn bác sĩ --</option>
+        <option>Bác sĩ A</option>
+        <option>Bác sĩ B</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Ngày</label>
+      <input type="date" class="form-control">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Giờ</label>
+      <input type="time" class="form-control">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Ghi chú</label>
+      <textarea class="form-control" rows="3"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Xác nhận đặt lịch</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Sửa bác sĩ{% endblock %}
+
+{% block content %}
+<h2>✏️ Sửa thông tin bác sĩ</h2>
+<form method="post" enctype="multipart/form-data">
+  <div class="mb-3">
+    <label class="form-label">Tên bác sĩ</label>
+    <input type="text" name="name" class="form-control" value="{{ doctor.tenBacSi }}" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Chuyên khoa</label>
+    <input type="text" name="specialty" class="form-control" value="{{ doctor.chuyenKhoa }}" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Chức vụ</label>
+    <input type="text" name="position" class="form-control" value="{{ doctor.chucVu }}">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Địa chỉ</label>
+    <input type="text" name="address" class="form-control" value="{{ doctor.diaChiPhongKham }}">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Kinh nghiệm (năm)</label>
+    <input type="number" name="experience" class="form-control" value="{{ doctor.kinhNghiem }}">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Giới thiệu</label>
+    <textarea name="description" class="form-control">{{ doctor.GioiThieu }}</textarea>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Trình độ học vấn</label>
+    <textarea name="education" class="form-control">{{ doctor.HocVan }}</textarea>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Chứng chỉ</label>
+    <textarea name="certifications" class="form-control">{{ doctor.ChungChi }}</textarea>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Ảnh hiện tại</label><br>
+    {% if doctor.hinhAnh %}
+      <img src="{{ url_for('static', filename=doctor.hinhAnh) }}" width="120" class="rounded shadow mb-2">
+    {% else %}
+      <img src="{{ url_for('static', filename='images/default.png') }}" width="120" class="rounded shadow mb-2">
+    {% endif %}
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Thay ảnh mới (nếu có)</label>
+    <input type="file" name="image" class="form-control">
+  </div>
+  <button type="submit" class="btn btn-primary">Cập nhật</button>
+  <a href="{{ url_for('admin_manage_doctors') }}" class="btn btn-secondary">Quay lại</a>
+</form>
+{% endblock %}

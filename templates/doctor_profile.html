@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}Hồ sơ bác sĩ{% endblock %}
+{% block searchbar %}{% endblock %}
+{% block content %}
+<div class="container my-5">
+  <div class="row g-4">
+    <!-- Cột trái: Thông tin cá nhân -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm p-3">
+        <div class="text-center mb-3">
+          <img src="{{ doctor.image_url or url_for('static', filename='images/default.png') }}" 
+               alt="{{ doctor.tenBacSi }}" 
+               class="rounded-circle mb-3 doctor-img"
+               style="width:120px;height:120px;object-fit:cover;">
+        </div>
+        
+        <form method="POST" enctype="multipart/form-data">
+          <!-- Tên bác sĩ -->
+          <div class="mb-3">
+            <label class="form-label">Tên bác sĩ</label>
+            <input type="text" name="tenBacSi" class="form-control" value="{{ doctor.tenBacSi }}" required>
+          </div>
+
+          <!-- Chuyên khoa -->
+          <div class="mb-3">
+            <label class="form-label">Chuyên khoa</label>
+            <input type="text" name="chuyenKhoa" class="form-control" value="{{ doctor.chuyenKhoa }}" required>
+          </div>
+
+          <!-- Chức vụ -->
+          <div class="mb-3">
+            <label class="form-label">Chức vụ</label>
+            <input type="text" name="chucVu" class="form-control" value="{{ doctor.chucVu }}">
+          </div>
+
+          <!-- Kinh nghiệm -->
+          <div class="mb-3">
+            <label class="form-label">Kinh nghiệm (năm)</label>
+            <input type="number" name="kinhNghiem" class="form-control" value="{{ doctor.kinhNghiem or 0 }}">
+          </div>
+
+          <!-- Địa chỉ phòng khám -->
+          <div class="mb-3">
+            <label class="form-label">Địa chỉ phòng khám</label>
+            <input type="text" name="diaChiPhongKham" class="form-control" value="{{ doctor.diaChiPhongKham }}">
+          </div>
+
+          <!-- Giới thiệu -->
+          <div class="mb-3">
+            <label class="form-label">Giới thiệu</label>
+            <textarea name="description" class="form-control" rows="3">{{ doctor.description }}</textarea>
+          </div>
+
+          <!-- Trình độ học vấn -->
+          <div class="mb-3">
+            <label class="form-label">Trình độ học vấn (ngăn cách bằng ; )</label>
+            <textarea name="education" class="form-control" rows="2">{{ doctor.education }}</textarea>
+          </div>
+
+          <!-- Bằng cấp & chứng chỉ -->
+          <div class="mb-3">
+            <label class="form-label">Bằng cấp & chứng chỉ (ngăn cách bằng ; )</label>
+            <textarea name="certifications" class="form-control" rows="2">{{ doctor.certifications }}</textarea>
+          </div>
+
+          <!-- Ảnh -->
+          <div class="mb-3">
+            <label class="form-label">Ảnh (upload nếu muốn đổi)</label>
+            <input type="file" name="hinhAnh" class="form-control">
+          </div>
+
+          <button type="submit" class="btn btn-success w-100">Lưu thay đổi</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Cột phải: Lịch làm việc (giống doctor_detail.html) -->
+    <div class="col-lg-8">
+      <div class="card shadow-sm p-3">
+        <h5>Lịch làm việc tuần này</h5>
+        <div class="d-flex justify-content-center align-items-center my-3">
+          <a href="{{ url_for('doctor_profile', week_start=prev_week) }}" class="btn btn-outline-secondary me-3">&lt;</a>
+          <span>{{ week_label }}</span>
+          <a href="{{ url_for('doctor_profile', week_start=next_week) }}" class="btn btn-outline-secondary ms-3">&gt;</a>
+        </div>
+        <table class="table table-bordered text-center align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Giờ</th>
+              {% for d in days %}
+              <th>{{ d.strftime('%a %d/%m') }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for h in hours %}
+            <tr>
+              <td><strong>{{ "%02d:00"|format(h) }}</strong></td>
+              {% for d in days %}
+                {% if schedule_map.get(d) and h in schedule_map[d] %}
+                  <td class="bg-secondary text-white">Bận</td>
+                {% else %}
+                  <td></td>
+                {% endif %}
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

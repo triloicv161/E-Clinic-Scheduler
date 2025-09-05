@@ -1,0 +1,34 @@
+{% extends "admin/admin_base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>{{ action }} bác sĩ</h2>
+  <form method="post">
+    <div class="mb-3">
+      <label class="form-label">Tên bác sĩ</label>
+      <input type="text" name="name" class="form-control" value="{{ doctor.name if doctor else '' }}" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Chuyên khoa</label>
+      <input type="text" name="specialty" class="form-control" value="{{ doctor.specialty if doctor else '' }}" required>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Chức vụ</label>
+      <input type="text" name="position" class="form-control" value="{{ doctor.position if doctor else '' }}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Địa chỉ</label>
+      <input type="text" name="address" class="form-control" value="{{ doctor.address if doctor else '' }}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Kinh nghiệm (năm)</label>
+      <input type="number" name="experience" class="form-control" value="{{ doctor.experience if doctor else '' }}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Ảnh (URL)</label>
+      <input type="text" name="image_url" class="form-control" value="{{ doctor.image_url if doctor else '' }}">
+    </div>
+    <button type="submit" class="btn btn-success">{{ action }}</button>
+    <a href="{{ url_for('admin_doctors') }}" class="btn btn-secondary">Quay lại</a>
+  </form>
+</div>
+{% endblock %}

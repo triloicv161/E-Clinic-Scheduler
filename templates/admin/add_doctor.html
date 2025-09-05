@@ -1,0 +1,46 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}Thêm bác sĩ{% endblock %}
+
+{% block content %}
+<h2>➕ Thêm bác sĩ</h2>
+<form method="post" enctype="multipart/form-data">
+  <div class="mb-3">
+    <label for="tenBacSi">Tên bác sĩ:</label>
+    <input type="text" id="tenBacSi" class="form-control" name="tenBacSi" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Chuyên khoa</label>
+    <input type="text" name="chuyenKhoa" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Chức vụ</label>
+    <input type="text" name="chucVu" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Trình độ học vấn</label>
+    <input type="text" name="trinhDo" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Kinh nghiệm (năm)</label>
+    <input type="number" name="kinhNghiem" class="form-control" value="0">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Địa chỉ phòng khám</label>
+    <input type="text" name="diaChiPhongKham" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Giới thiệu</label>
+    <textarea name="description" class="form-control"></textarea>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Chứng chỉ</label>
+    <textarea name="certifications" class="form-control"></textarea>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Ảnh (upload)</label>
+    <input type="file" name="hinhAnh" class="form-control">
+  </div>
+  <button type="submit" class="btn btn-success">Lưu</button>
+  <a href="{{ url_for('admin_manage_doctors') }}" class="btn btn-secondary">Quay lại</a>
+</form>
+{% endblock %}
