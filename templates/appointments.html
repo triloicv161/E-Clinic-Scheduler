@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block searchbar %}{% endblock %}
+{% block content %}
+
+<h2>Danh sách cuộc hẹn của tôi</h2>
+
+{% if appointments %}
+<div class="appointments-container">
+    {% for a in appointments %}
+    <div class="appointment-card">
+        <div class="appointment-info">
+            <h3>{{ a.tenBacSi }} - {{ a.chuyenKhoa }}</h3>
+            <p><strong>Ngày hẹn:</strong> {{ a.ngayHen }}</p>
+            <p><strong>Giờ hẹn:</strong> {{ a.thoiGianHen }}</p>
+            <p><strong>Ghi chú:</strong> {{ a.lyDoKham }}</p>
+        </div>
+        <div class="appointment-actions">
+            <a href="{{ url_for('appointment_detail', id=a.idLichHen) }}" class="btn-view">Xem chi tiết</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>Chưa có cuộc hẹn nào.</p>
+{% endif %}
+
+<style>
+.appointments-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.appointment-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    transition: box-shadow 0.3s ease;
+}
+
+.appointment-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.appointment-info h3 {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.appointment-info p {
+    margin: 3px 0;
+    color: #555;
+}
+
+.appointment-actions .btn-view {
+    text-decoration: none;
+    background-color: #007bff;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.appointment-actions .btn-view:hover {
+    background-color: #0056b3;
+}
+</style>
+{% endblock %}

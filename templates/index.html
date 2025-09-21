@@ -2,6 +2,7 @@
 
 {% block title %}Trang chủ{% endblock %}
 {% block searchbar %}{% endblock %}
+
 {% block content %}
 <!-- Banner chính -->
 <section class="text-center py-5 bg-light">
@@ -12,64 +13,78 @@
          style="max-height:300px;">
     <h2 class="fw-bold">Dịch vụ của chúng tôi</h2>
     <hr class="w-25 mx-auto">
-    <div class="row justify-content-center mt-4">
+    <div class="row justify-content-center mt-4 g-4">
       <div class="col-md-3">
         <div class="card shadow-sm p-4 h-100 text-center">
           <h5>Đặt lịch hẹn</h5>
+          <p class="text-muted">Đặt lịch nhanh chóng, chọn bác sĩ và khung giờ phù hợp.</p>
           <a href="{{ url_for('booking') }}" class="stretched-link"></a>
         </div>
       </div>
       <div class="col-md-3">
         <div class="card shadow-sm p-4 h-100 text-center">
+          <h5>Tìm kiếm bác sĩ</h5>
+          <p class="text-muted">Tra cứu bác sĩ theo chuyên khoa, kinh nghiệm và đánh giá.</p>
+          <a href="{{ url_for('doctors') }}" class="stretched-link"></a>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow-sm p-4 h-100 text-center">
           <h5>Chi tiết cuộc hẹn</h5>
-          <a href="{{ url_for('login') }}" class="stretched-link"></a>
+          <p class="text-muted">Xem thông tin chi tiết lịch khám đã đặt với bác sĩ.</p>
+          <a href="{{ url_for('appointments') }}" class="stretched-link"></a>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Phần giới thiệu dịch vụ -->
+<!-- Giới thiệu dịch vụ -->
 <section class="py-5">
   <div class="container">
+
+    <!-- Tìm bác sĩ -->
     <div class="row align-items-center mb-5">
       <div class="col-md-6">
         <img src="{{ url_for('static', filename='images/find_doctor.jpg') }}" 
              alt="Tìm kiếm bác sĩ" 
-             class="img-fluid rounded shadow service-img1">
+             class="img-fluid rounded shadow">
       </div>
       <div class="col-md-6">
         <h4>Tìm kiếm bác sĩ</h4>
-        <p>Người dùng có thể tìm kiếm bác sĩ theo chuyên khoa, tên hoặc mức độ kinh nghiệm. Kết quả hiển thị kèm thông tin cơ bản như chuyên môn, thời gian làm việc, đánh giá từ bệnh nhân.</p>
+        <p>Người dùng có thể tìm bác sĩ theo chuyên khoa, tên hoặc kinh nghiệm. Kết quả hiển thị kèm thông tin cơ bản như chuyên môn, thời gian làm việc và đánh giá.</p>
         <a href="{{ url_for('doctors') }}" class="btn btn-primary">Xem thêm</a>
       </div>
     </div>
 
+    <!-- Đặt lịch hẹn -->
     <div class="row align-items-center mb-5">
       <div class="col-md-6 order-md-2">
         <img src="{{ url_for('static', filename='images/appointment_detail.jpg') }}" 
              alt="Đặt lịch hẹn" 
-             class="img-fluid rounded shadow service-img">
+             class="img-fluid rounded shadow">
       </div>
       <div class="col-md-6 order-md-1">
         <h4>Đặt lịch hẹn</h4>
-        <p>Người dùng có thể lựa chọn ngày, giờ và dịch vụ khám phù hợp. Hệ thống hiển thị danh sách khung giờ còn trống để bệnh nhân dễ dàng chọn lựa.</p>
+        <p>Người dùng có thể chọn ngày, giờ và dịch vụ khám phù hợp. Hệ thống hiển thị khung giờ còn trống để bệnh nhân dễ dàng lựa chọn.</p>
         <a href="{{ url_for('booking') }}" class="btn btn-primary">Xem thêm</a>
       </div>
     </div>
 
+    <!-- Chi tiết cuộc hẹn -->
     <div class="row align-items-center">
       <div class="col-md-6">
         <img src="{{ url_for('static', filename='images/appointment_doctor.jpg') }}" 
              alt="Chi tiết cuộc hẹn" 
-             class="img-fluid rounded shadow service-img1">
+             class="img-fluid rounded shadow">
       </div>
       <div class="col-md-6">
         <h4>Chi tiết cuộc hẹn</h4>
-        <p>Người dùng có thể xem đầy đủ thông tin của cuộc hẹn gồm: tên bác sĩ, chuyên khoa, ngày giờ khám, địa điểm, dịch vụ và ghi chú kèm theo (nếu có).</p>
+        <p>Người dùng có thể xem đầy đủ thông tin lịch hẹn: bác sĩ, chuyên khoa, ngày giờ, địa điểm, dịch vụ và ghi chú kèm theo.</p>
         <a href="{{ url_for('login') }}" class="btn btn-primary">Xem thêm</a>
       </div>
     </div>
+
   </div>
 </section>
 {% endblock %}

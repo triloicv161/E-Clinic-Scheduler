@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block searchbar %}{% endblock %}
+{% block content %}
+
+<div class="appointment-card">
+    <h2>📝 Chi tiết cuộc hẹn</h2>
+    <div class="appointment-info">
+        <p><strong>Bệnh nhân:</strong> {{ appointment.tenBenhNhan }}</p>
+        <p><strong>Bác sĩ:</strong> {{ appointment.tenBacSi }} - {{ appointment.chuyenKhoa }}</p>
+        <p><strong>Ngày hẹn:</strong> {{ appointment.ngayHen }}</p>
+        <p><strong>Giờ hẹn:</strong> {{ appointment.thoiGianHen }}</p>
+        <p><strong>Ghi chú:</strong> {{ appointment.lyDoKham }}</p>
+    </div>
+    <a href="{{ url_for('appointments') }}" class="btn-back">⬅ Quay lại danh sách</a>
+</div>
+
+<style>
+.appointment-card {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 30px 25px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+
+.appointment-card:hover {
+    transform: translateY(-3px);
+}
+
+.appointment-card h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+}
+
+.appointment-info p {
+    font-size: 16px;
+    margin: 10px 0;
+    line-height: 1.5;
+    color: #555;
+}
+
+.appointment-info strong {
+    color: #007bff;
+}
+
+.btn-back {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.btn-back:hover {
+    background-color: #0056b3;
+}
+</style>
+{% endblock %}

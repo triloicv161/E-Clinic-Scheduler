@@ -1,36 +1,46 @@
 {% extends "base.html" %}
 
-{% block title %}Đặt lịch hẹn{% endblock %}
-{% block searchbar %}{% endblock %}
+{% block title %}Đặt lịch khám{% endblock %}
+
 {% block content %}
-<div class="container py-5">
-  <h2 class="mb-4">Đặt lịch hẹn</h2>
-  <form>
-    <div class="mb-3">
-      <label class="form-label">Chọn bác sĩ</label>
-      <select class="form-select">
-        <option>-- Chọn bác sĩ --</option>
-        <option>Bác sĩ A</option>
-        <option>Bác sĩ B</option>
-      </select>
-    </div>
+<div class="card shadow p-4" style="max-width:600px;margin:auto;">
+    <h2 class="mb-4">📅 Đặt lịch khám</h2>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="tenBenhNhan" class="form-label">Tên bệnh nhân:</label>
+            <input type="text" id="tenBenhNhan" name="tenBenhNhan" class="form-control" required>
+        </div>
 
-    <div class="mb-3">
-      <label class="form-label">Ngày</label>
-      <input type="date" class="form-control">
-    </div>
+        <div class="mb-3">
+            <label for="idBacSi" class="form-label">Chọn bác sĩ:</label>
+            <select id="idBacSi" name="idBacSi" class="form-select" required>
+                {% for bs in bacsi_list %}
+                    <option value="{{ bs.idBacSi }}">{{ bs.tenBacSi }} - {{ bs.chuyenKhoa }}</option>
+                {% endfor %}
+            </select>
+        </div>
 
-    <div class="mb-3">
-      <label class="form-label">Giờ</label>
-      <input type="time" class="form-control">
-    </div>
+        <div class="mb-3">
+            <label for="ngayHen" class="form-label">Ngày hẹn:</label>
+            <input type="date" id="ngayHen" name="ngayHen" class="form-control" required>
+        </div>
 
-    <div class="mb-3">
-      <label class="form-label">Ghi chú</label>
-      <textarea class="form-control" rows="3"></textarea>
-    </div>
+        <div class="mb-3">
+            <label for="thoiGianHen" class="form-label">Thời gian:</label>
+            <input type="time" id="thoiGianHen" name="thoiGianHen" class="form-control" required>
+        </div>
 
-    <button type="submit" class="btn btn-primary">Xác nhận đặt lịch</button>
-  </form>
+        <div class="mb-3">
+            <label for="lyDoKham" class="form-label">Lý do khám:</label>
+            <input type="text" id="lyDoKham" name="lyDoKham" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="tienThanhToan" class="form-label">Số tiền đặt cọc:</label>
+            <input type="text" id="tienThanhToan" name="tienThanhToan" class="form-control" value="300000" readonly>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Đặt lịch & Thanh toán</button>
+    </form>
 </div>
 {% endblock %}

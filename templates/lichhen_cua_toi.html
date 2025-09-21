@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Lịch hẹn của tôi{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">📅 Lịch hẹn của tôi</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Bác sĩ</th>
+            <th>Ngày</th>
+            <th>Giờ</th>
+            <th>Trạng thái</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for lich in lichhen_list %}
+        <tr>
+            <td>{{ lich.tenBacSi }}</td>
+            <td>{{ lich.ngayHen }}</td>
+            <td>{{ lich.thoiGianHen }}</td>
+            <td>
+                {% if lich.trangThai == "Chờ xác nhận" %}
+                    <span class="badge bg-warning text-dark">{{ lich.trangThai }}</span>
+                {% elif lich.trangThai == "Đã xác nhận" %}
+                    <span class="badge bg-success">{{ lich.trangThai }}</span>
+                {% elif lich.trangThai == "Hủy" %}
+                    <span class="badge bg-danger">{{ lich.trangThai }}</span>
+                {% else %}
+                    <span class="badge bg-secondary">{{ lich.trangThai }}</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
