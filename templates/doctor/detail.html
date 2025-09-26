@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Chi tiết bác sĩ{% endblock %}
+{% block searchbar %}{% endblock %}
+
+{% block content %}
+{% if doctor %}
+<div class="container my-5">
+  <div class="row g-4">
+    <!-- Cột trái: Thông tin bác sĩ -->
+    <div class="col-lg-4">
+      <div class="card shadow-sm p-3 text-center">
+        <!-- Ảnh bác sĩ -->
+        <img src="{{ doctor.hinhanh and url_for('static', filename=doctor.hinhanh) or url_for('static', filename='images/default-doctor.png') }}"
+     alt="{{ doctor.ten_bacsi }}"
+     class="mb-3 d-block mx-auto doctor-img shadow-sm"
+     style="width:100%; max-width:300px; height:auto; object-fit:cover; border-radius:8px;">
+
+
+
+        <h4>{{ doctor.ten_bacsi }}</h4>
+
+        <!-- Chuyên khoa -->
+        {% if doctor.chuyen_khoa %}
+          <p><span class="badge bg-info text-dark"><i class="fas fa-stethoscope"></i> {{ doctor.chuyen_khoa }}</span></p>
+        {% endif %}
+
+        <!-- Địa chỉ phòng khám -->
+        {% if doctor.dia_chi %}
+          <p><span class="badge bg-secondary"><i class="fas fa-hospital"></i> {{ doctor.dia_chi }}</span></p>
+        {% endif %}
+
+        <!-- Số năm kinh nghiệm -->
+        {% if doctor.kinh_nghiem %}
+          <p><span class="badge bg-primary"><i class="fas fa-star"></i> {{ doctor.kinh_nghiem }} năm kinh nghiệm</span></p>
+        {% endif %}
+
+        <!-- Học vấn -->
+        {% if doctor.hocvan %}
+          <p><span class="badge bg-success"><i class="fas fa-graduation-cap"></i> {{ doctor.hocvan }}</span></p>
+        {% endif %}
+
+        <hr>
+
+        <!-- Mô tả / Giới thiệu -->
+        <p>{{ doctor.mo_ta or "Chưa có thông tin." }}</p>
+
+        <!-- Nút đặt lịch -->
+        <a class="btn btn-success mb-3" href="{{ url_for('book_appointment', doctor_id=doctor.id_bacsi) }}">
+          Đặt lịch
+        </a>
+      </div>
+    </div>
+
+    <!-- Cột phải: Đánh giá + Lịch làm việc -->
+    <div class="col-lg-8">
+      <!-- Đánh giá -->
+      <div class="card shadow-sm p-3 mb-4">
+        <h5>⭐ Đánh giá từ bệnh nhân</h5>
+        <h6 class="text-warning">Điểm trung bình: {{ avg_rating or 0 }} / 5</h6>
+        {% if reviews %}
+          {% for rv in reviews %}
+            <div class="border rounded p-2 mb-2">
+              <strong>{{ rv.username }}</strong> - 
+              <span class="text-warning">{% for i in range(rv.so_sao) %}⭐{% endfor %}</span>
+              <p>{{ rv.binhluan }}</p>
+              {% if rv.created_at %}
+                <small class="text-muted">Ngày {{ rv.created_at.strftime('%d-%m-%Y %H:%M') }}</small>
+              {% endif %}
+            </div>
+          {% endfor %}
+        {% else %}
+          <p class="text-muted">Chưa có đánh giá nào.</p>
+        {% endif %}
+      </div>
+
+      <!-- Lịch làm việc -->
+      <div class="mt-5">
+        <h4>Lịch làm việc</h4>
+        <div class="d-flex justify-content-center align-items-center my-3">
+          {% if week_offset > 0 %}
+            <a href="{{ url_for('doctor_detail', doctor_id=doctor.id_bacsi, week=week_offset-1) }}" 
+               class="btn btn-outline-secondary me-3">&lt; Tuần trước</a>
+          {% else %}
+            <button class="btn btn-outline-secondary me-3" disabled>&lt; Tuần trước</button>
+          {% endif %}
+
+          <span>Tuần {{ week_label }}</span>
+
+          <a href="{{ url_for('doctor_detail', doctor_id=doctor.id_bacsi, week=week_offset+1) }}" 
+             class="btn btn-outline-secondary ms-3">Tuần sau &gt;</a>
+        </div>
+
+        <table class="table table-bordered text-center align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Giờ</th>
+              {% for day in week_dates %}
+                <th>{{ day.strftime('%a %d/%m') }}</th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for hour in hours %}
+            <tr>
+              <td><strong>{{ "%02d:00"|format(hour) }} - {{ "%02d:00"|format(hour+1) }}</strong></td>
+              {% for day in week_dates %}
+                {% set day_str = day.strftime("%Y-%m-%d") %}
+                {% if lichlam.get(day_str) and lichlam[day_str].get(hour) == "booked" %}
+                  <td class="bg-secondary text-white">Bận</td>
+                {% else %}
+                  <td></td>
+                {% endif %}
+              {% endfor %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

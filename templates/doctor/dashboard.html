@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Dashboard Bác sĩ{% endblock %}
+
+{% block content %}
+<h3>Danh sách lịch hẹn</h3>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Ngày giờ</th>
+      <th>Bệnh nhân</th>
+      <th>Người tạo</th>
+      <th>Ghi chú</th>
+      <th>Trạng thái</th>
+      <th>Thao tác</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for l in lichhen %}
+    <tr>
+      <td>{{ l.ThoiGianHen }}</td>
+      <td>{{ l.ten_benhnhan }}</td>
+      <td>{{ l.nguoi_tao }}</td>
+      <td>{{ l.ghichu or '' }}</td>
+      <td>{{ l.trang_thai }}</td>
+      <td>
+        <a href="{{ url_for('doctor_appointment_detail', id_lichhen=l.id_lichhen) }}" class="btn btn-sm btn-info mb-1">Chi tiết</a>
+
+        {% if l.trang_thai != 'da_huy' and l.trang_thai != 'da_kham' %}
+        <form action="{{ url_for('doctor_update_appointment', id_lichhen=l.id_lichhen) }}" method="POST" style="display:inline;">
+          <input type="hidden" name="trang_thai" value="xac_nhan">
+          <button class="btn btn-sm btn-success mb-1">Xác nhận</button>
+        </form>
+        <form action="{{ url_for('doctor_update_appointment', id_lichhen=l.id_lichhen) }}" method="POST" style="display:inline;">
+          <input type="hidden" name="trang_thai" value="da_huy">
+          <button class="btn btn-sm btn-danger mb-1">Hủy</button>
+        </form>
+        {% endif %}
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="6" class="text-center">Chưa có lịch hẹn nào.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<a href="{{ url_for('doctor_schedule') }}" class="btn btn-primary mt-3 mb-4">Quản lý ca làm việc</a>
+
+<hr>
+
+<h3>Lịch làm việc tuần {{ week_label }}</h3>
+
+<div class="d-flex justify-content-center align-items-center my-3">
+  {% if week_offset > 0 %}
+    <a href="{{ url_for('doctor_dashboard', week=week_offset-1) }}" class="btn btn-outline-secondary me-3">&lt; Tuần trước</a>
+  {% else %}
+    <button class="btn btn-outline-secondary me-3" disabled>&lt; Tuần trước</button>
+  {% endif %}
+
+  <span>Tuần {{ week_label }}</span>
+
+  <a href="{{ url_for('doctor_dashboard', week=week_offset+1) }}" class="btn btn-outline-secondary ms-3">Tuần sau &gt;</a>
+</div>
+
+<table class="table table-bordered text-center align-middle">
+  <thead class="table-light">
+    <tr>
+      <th>Giờ</th>
+      {% for day in week_dates %}
+        <th>{{ day.strftime('%a %d/%m') }}</th>
+      {% endfor %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for hour in hours %}
+    <tr>
+      <td><strong>{{ "%02d:00"|format(hour) }} - {{ "%02d:00"|format(hour+1) }}</strong></td>
+      {% for day in week_dates %}
+        {% set day_str = day.strftime("%Y-%m-%d") %}
+        {% if lichlam.get(day_str) and lichlam[day_str].get(hour) == "booked" %}
+          <td class="bg-secondary text-white">Bận</td>
+        {% else %}
+          <td></td>
+        {% endif %}
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
