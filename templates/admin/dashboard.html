@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<h3>Dashboard Admin</h3>
+<div class="row">
+  <div class="col-md-3">
+    <div class="card text-white bg-primary mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Tổng bác sĩ</h5>
+        <p class="card-text fs-3">{{ tong_bacsi }}</p>
+        <a href="{{ url_for('admin_doctors') }}" class="btn btn-light btn-sm">Xem chi tiết</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-success mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Tổng bệnh nhân</h5>
+        <p class="card-text fs-3">{{ tong_benhnhan }}</p>
+        <a href="{{ url_for('admin_patients') }}" class="btn btn-light btn-sm">Xem chi tiết</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-warning mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Tổng lịch hẹn</h5>
+        <p class="card-text fs-3">{{ tong_lichhen }}</p>
+        <a href="{{ url_for('admin_appointments') }}" class="btn btn-light btn-sm">Xem chi tiết</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-white bg-info mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Tổng người dùng</h5>
+        <p class="card-text fs-3">{{ tong_nguoidung }}</p>
+        <a href="{{ url_for('admin_users') }}" class="btn btn-light btn-sm">Xem chi tiết</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

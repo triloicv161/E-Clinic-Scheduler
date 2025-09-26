@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}{% if user %}Sửa người dùng{% else %}Thêm người dùng{% endif %}{% endblock %}
+
+{% block content %}
+<h3>{% if user %}Sửa người dùng{% else %}Thêm người dùng{% endif %}</h3>
+
+<form method="POST">
+  <div class="mb-3">
+    <label class="form-label">Username</label>
+    <input type="text" name="username" class="form-control" value="{{ user.username if user else '' }}">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Mật khẩu {% if user %}(Để trống nếu không đổi){% endif %}</label>
+    <input type="password" name="password" class="form-control">
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Role</label>
+    <select name="role" class="form-select">
+      <option value="user" {% if user and user.role=='user' %}selected{% endif %}>User</option>
+      <option value="doctor" {% if user and user.role=='doctor' %}selected{% endif %}>Doctor</option>
+      <option value="admin" {% if user and user.role=='admin' %}selected{% endif %}>Admin</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-success">Lưu</button>
+  <a href="{{ url_for('admin_users') }}" class="btn btn-secondary">Hủy</a>
+</form>
+{% endblock %}

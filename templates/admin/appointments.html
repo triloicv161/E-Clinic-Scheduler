@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Quản lý Lịch hẹn{% endblock %}
+
+{% block content %}
+<h3>Danh sách Lịch hẹn</h3>
+<table class="table table-bordered">
+  <thead class="table-light">
+    <tr>
+      <th>ID</th>
+      <th>Bác sĩ</th>
+      <th>Bệnh nhân</th>
+      <th>Thời gian</th>
+      <th>Trạng thái</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for l in appointments %}
+    <tr>
+      <td>{{ l.id_lichhen }}</td>
+      <td>{{ l.ten_bacsi }}</td>
+      <td>{{ l.ten_benhnhan }}</td>
+      <td>{{ l.ThoiGianHen.strftime('%d-%m-%Y %H:%M') }}</td>
+      <td>{{ l.trang_thai }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5" class="text-center">Chưa có lịch hẹn nào.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

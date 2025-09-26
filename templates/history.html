@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Lịch sử đặt lịch{% endblock %}
+
+{% block content %}
+<h3>Lịch sử đặt lịch</h3>
+
+{% set trang_thai_text = {
+    'dang_cho': 'Đang chờ',
+    'xac_nhan': 'Đã xác nhận',
+    'da_huy': 'Đã hủy',
+    'da_kham': 'Đã khám'
+} %}
+
+<table class="table table-bordered">
+  <thead class="table-light">
+    <tr>
+      <th>ID</th>
+      <th>Bác sĩ</th>
+      <th>Bệnh nhân</th>
+      <th>Thời gian</th>
+      <th>Trạng thái</th>
+      <th>Thao tác</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for l in lichhen %}
+    {% set status = l.trang_thai %}
+    <tr class="{% if status == 'da_kham' %}table-secondary{% elif status in ['dang_cho','xac_nhan'] %}table-success{% elif status == 'da_huy' %}table-danger{% endif %}">
+      <td>{{ l.id_lichhen }}</td>
+      <td>{{ l.ten_bacsi }}</td>
+      <td>{{ l.ten_benhnhan }}</td>
+      <td>{{ l.ThoiGianHen.strftime('%d-%m-%Y %H:%M') }}</td>
+      <td>{{ trang_thai_text.get(status, status) }}</td>
+      <td>
+        {% if status in ['dang_cho','xac_nhan'] %}
+          <a href="{{ url_for('cancel_appointment', id_lichhen=l.id_lichhen) }}" class="btn btn-danger btn-sm">Hủy lịch</a>
+        {% endif %}
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="6" class="text-center">Chưa có lịch hẹn.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

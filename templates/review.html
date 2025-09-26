@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Đánh giá bác sĩ{% endblock %}
+{% block content %}
+<h2>Đánh giá bác sĩ</h2>
+<form method="post">
+    <div class="mb-3">
+        <label>Số sao</label>
+        <select name="so_sao" class="form-control">
+            <option value="5">⭐⭐⭐⭐⭐</option>
+            <option value="4">⭐⭐⭐⭐</option>
+            <option value="3">⭐⭐⭐</option>
+            <option value="2">⭐⭐</option>
+            <option value="1">⭐</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label>Bình luận</label>
+        <textarea name="binhluan" class="form-control"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Gửi đánh giá</button>
+</form>
+{% endblock %}

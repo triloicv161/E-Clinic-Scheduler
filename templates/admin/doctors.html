@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Quản lý Bác sĩ{% endblock %}
+
+{% block content %}
+<h3>Danh sách Bác sĩ</h3>
+
+<a href="{{ url_for('admin_doctor_add') }}" class="btn btn-primary mb-3">Thêm bác sĩ mới</a>
+
+<table class="table table-bordered">
+  <thead class="table-light">
+    <tr>
+      <th>ID</th>
+      <th>Tên bác sĩ</th>
+      <th>Kinh nghiệm</th>
+      <th>Học vấn</th>
+      <th>Mô tả</th>
+      <th>Hình ảnh</th>
+      <th>Username</th>
+      <th>Thao tác</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for d in doctors %}
+    <tr>
+      <td>{{ d.id_bacsi }}</td>
+      <td>{{ d.ten_bacsi }}</td>
+      <td>{{ d.kinh_nghiem }}</td>
+      <td>{{ d.hocvan }}</td>
+      <td>{{ d.mo_ta }}</td>
+      <td>
+        {% if d.hinhanh %}
+        <img src="{{ url_for('static', filename='images/' ~ d.hinhanh) }}" width="60">
+        {% endif %}
+      </td>
+      <td>{{ d.username or '-' }}</td>
+      <td>
+        <!-- Sửa URL tham số đúng với route -->
+        <a href="{{ url_for('admin_doctor_edit', id_bacsi=d.id_bacsi) }}" class="btn btn-sm btn-warning">Sửa</a>
+        <form action="{{ url_for('admin_doctor_delete', id_bacsi=d.id_bacsi) }}" method="POST" style="display:inline;">
+          <button type="submit" class="btn btn-sm btn-danger"
+                  onclick="return confirm('Bạn có chắc muốn xóa bác sĩ này không?');">Xóa</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="8" class="text-center">Chưa có bác sĩ nào.</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

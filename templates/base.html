@@ -1,156 +1,93 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>{% block title %}E-Clinic{% endblock %}</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}E-Clinic{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome (tuỳ chọn icon) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <style>
-    .doctor-img {
-      width: 100%;
-      height: auto;
-      object-fit: cover;
-    }
-    .doctor-img.contain {
-      object-fit: contain;
-      background-color: #f5f5f5;
-    }
-    .btn {
-      margin: 5px;
-    }
-     main {
-      flex: 1; /* chiếm hết không gian trống để đẩy footer xuống */
-    }
-    body {
-      display: flex;
-      flex-direction: column;
-    }
-     html, body {
-      height: 100%;
-    }
-    .schedule-cell {
-    height: 80px;
-    cursor: pointer;
-    transition: transform 0.2s, background-color 0.2s;
-  }
-  .schedule-cell.available:hover {
-    background-color: #d4edda; /* xanh nhạt */
-    transform: scale(1.05);
-  }
-  .schedule-cell.booked {
-    background-color: #e9ecef !important; /* xám */
-    cursor: not-allowed;
-  }
-   td {
-    height: 50px;
-    min-width: 100px;
-  }
-  td.bg-secondary {
-    cursor: not-allowed;
-  }
-  td:not(.bg-secondary):hover {
-    background-color: #e6ffe6; /* xanh nhạt khi hover */
-  }
-  .service-img {
-    width: 400px;   /* hoặc 100px nếu muốn nhỏ hơn nữa */
-    height: auto;   /* giữ tỉ lệ gốc */
-    margin-right: 15px;
-}
-.service-img1 {
-    width: 400px;   /* hoặc 100px nếu muốn nhỏ hơn nữa */
-    height: auto;   /* giữ tỉ lệ gốc */
-    margin-right: 15px;
-    margin-left: 150px;
-}
-  </style>
+    <!-- CSS riêng -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    {% block extra_head %}{% endblock %}
 </head>
 <body>
-  <div class="container mt-3">
-  {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-      {% for category, message in messages %}
-        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-          {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <!-- Wrapper cho sticky footer -->
+    <div class="d-flex flex-column min-vh-100">
+
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="{{ url_for('index') }}">E-Clinic</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Trang chủ</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('doctor_list') }}">Bác sĩ</a></li>
+                        {% if session.get('user') and session['user']['role'] == 'user' %}
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('history') }}">Lịch sử</a></li>
+                        {% endif %}
+                        {% if session.get('user') and session['user']['role'] == 'doctor' %}
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('doctor_dashboard') }}">Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('doctor_schedule') }}">Lịch làm việc</a></li>
+                        {% endif %}
+                        {% if session.get('user') and session['user']['role'] == 'admin' %}
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_doctors') }}">Bác sĩ</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_patients') }}">Bệnh nhân</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_appointments') }}">Lịch hẹn</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('admin_users') }}">Người dùng</a></li>
+                        {% endif %}
+                    </ul>
+                    <ul class="navbar-nav">
+                        {% if session.get('user') %}
+                            <li class="nav-item">
+                                <span class="navbar-text me-2">Xin chào, {{ session['user']['username'] }}</span>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Đăng xuất</a></li>
+                        {% else %}
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Đăng nhập</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ url_for('register') }}">Đăng ký</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Flash messages -->
+        <div class="container mt-3">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
         </div>
-      {% endfor %}
-    {% endif %}
-  {% endwith %}
-  </div>
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-    <div class="container">
-      <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">E-Clinic Scheduler</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-              data-bs-target="#navbarNavDropdown">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Trang chủ</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('doctors') }}">Bác sĩ</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('booking') }}">Đặt lịch</a></li>
-        </ul>
 
-        <!-- Nếu chưa đăng nhập -->
-        {% if not session.get('user_id') %}
-          <a href="{{ url_for('login') }}" class="btn btn-outline-primary">Đăng nhập</a>
-          <a href="{{ url_for('register') }}" class="btn btn-primary">Đăng ký</a>
-        {% else %}
-        <!-- Nếu đã đăng nhập -->
-          <span class="me-2">Xin chào, {{ session.get('username') }}</span>
-          <a href="{{ url_for('logout') }}" class="btn btn-danger">Đăng xuất</a>
-        {% endif %}
-      </div>
-    </div>
-  </nav>
-  
+        <!-- Nội dung chính -->
+        <div class="container mt-4 flex-grow-1">
+            {% block content %}{% endblock %}
+        </div>
 
-  <!-- Nội dung chính -->
-  <main>
-     {% block searchbar %}
-    <div class="container py-5">
-  <h2 class="fw-bold text-center mb-4">Tinh hoa y học - Tận tâm chăm sóc</h2>
+        <!-- Footer -->
+        <footer class="bg-light text-center py-3 mt-auto">
+            &copy; 2025 E-Clinic. All rights reserved.
+        </footer>
+    </div>
 
-  <!-- Thanh tìm kiếm -->
-<form method="get" action="{{ url_for('doctors') }}" class="mb-4">
-  <div class="row g-2">
-    <div class="col-md-4">
-      <input type="text" name="q" value="{{ request.args.get('q','') }}"
-             class="form-control" placeholder="Nhập tên bác sĩ...">
-    </div>
-    <div class="col-md-3">
-      <select name="specialty" class="form-select">
-  <option value="">-- Tất cả chuyên khoa --</option>
-  {% for s in specialties %}
-    <option value="{{ s }}" {% if request.args.get('specialty') == s %}selected{% endif %}>{{ s }}</option>
-  {% endfor %}
-</select>
-    </div>
-    <div class="col-md-3">
-      <select name="address" class="form-select">
-  <option value="">-- Tất cả địa chỉ --</option>
-  {% for addr in addresses %}
-    <option value="{{ addr }}" {% if request.args.get('address') == addr %}selected{% endif %}>{{ addr }}</option>
-  {% endfor %}
-    </select>
-    </div>
-    <div class="col-md-2">
-      <button class="btn btn-primary w-100" type="submit">Tìm kiếm</button>
-    </div>
-  </div>
-</form>
-{% endblock %}
-    {% block content %}{% endblock %}
-    
-  </main>
-
-  <!-- Footer -->
-  <footer class="bg-dark text-white text-center py-4 mt-5">
-    <p class="mb-0">© 2025 E-Clinic Scheduler</p>
-  </footer>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
 </body>
-  
-
 </html>

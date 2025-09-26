@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Đặt lịch{% endblock %}
+
+{% block content %}
+<h3>Đặt lịch với {{ doctor['ten_bacsi'] }}</h3>
+
+<form method="POST">
+  <div class="mb-3">
+    <label for="ten_benhnhan" class="form-label">Tên bệnh nhân</label>
+    <input type="text" id="ten_benhnhan" name="ten_benhnhan" class="form-control" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="sodienthoai" class="form-label">Số điện thoại</label>
+    <input type="text" id="sodienthoai" name="sodienthoai" class="form-control">
+  </div>
+
+  <div class="mb-3">
+    <label for="ngay_hen" class="form-label">Ngày hẹn</label>
+    <input type="date" id="ngay_hen" name="ngay_hen" class="form-control" min="{{ today }}" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="gio_hen" class="form-label">Chọn giờ</label>
+    <select id="gio_hen" name="gio_hen" class="form-select" required>
+      {% for h in range(8, 18) %}
+        <option value="{{ '%02d:00' % h }}">{{ h }}:00</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="mota" class="form-label">Mô tả</label>
+    <textarea id="mota" name="mota" class="form-control" rows="3"></textarea>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Đặt lịch</button>
+</form>
+{% endblock %}

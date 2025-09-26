@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-
 {% block title %}Trang chủ{% endblock %}
 {% block searchbar %}{% endblock %}
 
@@ -13,26 +12,32 @@
          style="max-height:300px;">
     <h2 class="fw-bold">Dịch vụ của chúng tôi</h2>
     <hr class="w-25 mx-auto">
+    
+    <!-- Card chức năng chính -->
     <div class="row justify-content-center mt-4 g-4">
       <div class="col-md-3">
         <div class="card shadow-sm p-4 h-100 text-center">
           <h5>Đặt lịch hẹn</h5>
           <p class="text-muted">Đặt lịch nhanh chóng, chọn bác sĩ và khung giờ phù hợp.</p>
-          <a href="{{ url_for('booking') }}" class="stretched-link"></a>
+          <a href="{{ url_for('doctor_list') }}" class="stretched-link"></a>
         </div>
       </div>
       <div class="col-md-3">
         <div class="card shadow-sm p-4 h-100 text-center">
           <h5>Tìm kiếm bác sĩ</h5>
           <p class="text-muted">Tra cứu bác sĩ theo chuyên khoa, kinh nghiệm và đánh giá.</p>
-          <a href="{{ url_for('doctors') }}" class="stretched-link"></a>
+          <a href="{{ url_for('doctor_list') }}" class="stretched-link"></a>
         </div>
       </div>
       <div class="col-md-3">
         <div class="card shadow-sm p-4 h-100 text-center">
           <h5>Chi tiết cuộc hẹn</h5>
           <p class="text-muted">Xem thông tin chi tiết lịch khám đã đặt với bác sĩ.</p>
-          <a href="{{ url_for('appointments') }}" class="stretched-link"></a>
+          {% if session.get('user') and session['user']['role'] == 'user' %}
+            <a href="{{ url_for('history') }}" class="stretched-link"></a>
+          {% else %}
+            <a href="{{ url_for('login') }}" class="stretched-link"></a>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -53,7 +58,7 @@
       <div class="col-md-6">
         <h4>Tìm kiếm bác sĩ</h4>
         <p>Người dùng có thể tìm bác sĩ theo chuyên khoa, tên hoặc kinh nghiệm. Kết quả hiển thị kèm thông tin cơ bản như chuyên môn, thời gian làm việc và đánh giá.</p>
-        <a href="{{ url_for('doctors') }}" class="btn btn-primary">Xem thêm</a>
+        <a href="{{ url_for('doctor_list') }}" class="btn btn-primary">Xem thêm</a>
       </div>
     </div>
 
@@ -67,7 +72,7 @@
       <div class="col-md-6 order-md-1">
         <h4>Đặt lịch hẹn</h4>
         <p>Người dùng có thể chọn ngày, giờ và dịch vụ khám phù hợp. Hệ thống hiển thị khung giờ còn trống để bệnh nhân dễ dàng lựa chọn.</p>
-        <a href="{{ url_for('booking') }}" class="btn btn-primary">Xem thêm</a>
+        <a href="{{ url_for('doctor_list') }}" class="btn btn-primary">Xem thêm</a>
       </div>
     </div>
 
@@ -81,7 +86,11 @@
       <div class="col-md-6">
         <h4>Chi tiết cuộc hẹn</h4>
         <p>Người dùng có thể xem đầy đủ thông tin lịch hẹn: bác sĩ, chuyên khoa, ngày giờ, địa điểm, dịch vụ và ghi chú kèm theo.</p>
-        <a href="{{ url_for('login') }}" class="btn btn-primary">Xem thêm</a>
+        {% if session.get('user') and session['user']['role'] == 'user' %}
+          <a href="{{ url_for('history') }}" class="btn btn-primary">Xem thêm</a>
+        {% else %}
+          <a href="{{ url_for('login') }}" class="btn btn-primary">Xem thêm</a>
+        {% endif %}
       </div>
     </div>
 

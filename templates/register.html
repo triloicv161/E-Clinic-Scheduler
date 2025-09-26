@@ -1,28 +1,30 @@
 {% extends "base.html" %}
 {% block title %}Đăng ký{% endblock %}
-{% block searchbar %}{% endblock %}
 {% block content %}
-<div class="container mt-5">
-  <h2 class="mb-4">Đăng ký tài khoản</h2>
-  <form method="POST" action="{{ url_for('register') }}">
+<div style="max-width:560px;" class="mx-auto">
+  <h3>Đăng ký</h3>
+  <form method="POST">
     <div class="mb-3">
-      <label class="form-label">Tên đăng nhập</label>
-      <input type="text" class="form-control" name="username" required>
+      <label>Tên đăng nhập</label>
+      <input type="text" name="username" class="form-control" required>
     </div>
     <div class="mb-3">
-      <label class="form-label">Họ và tên</label>
-      <input type="text" class="form-control" name="hoten" required>
+      <label>Email</label>
+      <input type="email" name="email" class="form-control" required>
     </div>
     <div class="mb-3">
-      <label class="form-label">Email</label>
-      <input type="email" class="form-control" name="email" required>
+      <label>Mật khẩu</label>
+      <input type="password" name="password" class="form-control" required>
     </div>
     <div class="mb-3">
-      <label class="form-label">Mật khẩu</label>
-      <input type="password" class="form-control" name="password" required>
+      <label>Tên bệnh nhân (hiển thị)</label>
+      <input type="text" name="ten_benhnhan" class="form-control" placeholder="Tên đầy đủ (vd: Le Thi A)" required>
     </div>
-    <button type="submit" class="btn btn-primary">Đăng ký</button>
-    <a href="{{ url_for('login') }}" class="btn btn-link">Đã có tài khoản? Đăng nhập</a>
+    <div class="mb-3">
+      <label>Số điện thoại</label>
+      <input type="text" name="sodienthoai" class="form-control">
+    </div>
+    <button class="btn btn-success w-100">Đăng ký</button>
   </form>
 </div>
 {% endblock %}

@@ -1,34 +1,61 @@
-{% extends "admin/admin_base.html" %}
+{% extends "base.html" %}
+{% block title %}{{ doctor and 'Sửa bác sĩ' or 'Thêm bác sĩ' }}{% endblock %}
+
 {% block content %}
-<div class="container mt-4">
-  <h2>{{ action }} bác sĩ</h2>
-  <form method="post">
-    <div class="mb-3">
-      <label class="form-label">Tên bác sĩ</label>
-      <input type="text" name="name" class="form-control" value="{{ doctor.name if doctor else '' }}" required>
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Chuyên khoa</label>
-      <input type="text" name="specialty" class="form-control" value="{{ doctor.specialty if doctor else '' }}" required>
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Chức vụ</label>
-      <input type="text" name="position" class="form-control" value="{{ doctor.position if doctor else '' }}">
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Địa chỉ</label>
-      <input type="text" name="address" class="form-control" value="{{ doctor.address if doctor else '' }}">
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Kinh nghiệm (năm)</label>
-      <input type="number" name="experience" class="form-control" value="{{ doctor.experience if doctor else '' }}">
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Ảnh (URL)</label>
-      <input type="text" name="image_url" class="form-control" value="{{ doctor.image_url if doctor else '' }}">
-    </div>
-    <button type="submit" class="btn btn-success">{{ action }}</button>
-    <a href="{{ url_for('admin_doctors') }}" class="btn btn-secondary">Quay lại</a>
-  </form>
-</div>
+<h3>{{ doctor and 'Sửa bác sĩ' or 'Thêm bác sĩ' }}</h3>
+
+<form method="POST" enctype="multipart/form-data">
+  <div class="mb-3">
+    <label class="form-label">Tên bác sĩ</label>
+    <input type="text" name="ten_bacsi" class="form-control" value="{{ doctor.ten_bacsi if doctor else '' }}">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Chuyên khoa</label>
+    <input type="text" name="chuyen_khoa" class="form-control" value="{{ doctor.chuyen_khoa if doctor else '' }}">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Địa chỉ phòng khám</label>
+    <input type="text" name="dia_chi" class="form-control" value="{{ doctor.dia_chi if doctor else '' }}">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Kinh nghiệm</label>
+    <input type="text" name="kinh_nghiem" class="form-control" value="{{ doctor.kinh_nghiem if doctor else '' }}">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Học vấn</label>
+    <input type="text" name="hocvan" class="form-control" value="{{ doctor.hocvan if doctor else '' }}">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Mô tả</label>
+    <textarea name="mo_ta" class="form-control">{{ doctor.mo_ta if doctor else '' }}</textarea>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Ảnh đại diện</label>
+    <input type="file" name="hinhanh" class="form-control">
+    {% if doctor and doctor.hinhanh %}
+      <img src="{{ url_for('static', filename=doctor.hinhanh) }}" width="100" class="mt-2">
+    {% endif %}
+  </div>
+
+  {% if not doctor %}
+  <div class="mb-3">
+    <label class="form-label">Username</label>
+    <input type="text" name="username" class="form-control">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Password</label>
+    <input type="password" name="password" class="form-control">
+  </div>
+  {% endif %}
+
+  <button type="submit" class="btn btn-success">Lưu</button>
+  <a href="{{ url_for('admin_doctors') }}" class="btn btn-secondary">Hủy</a>
+</form>
 {% endblock %}

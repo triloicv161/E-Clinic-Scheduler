@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Quản lý Bệnh nhân{% endblock %}
+
+{% block content %}
+<h3>Danh sách Bệnh nhân</h3>
+<table class="table table-bordered">
+  <thead class="table-light">
+    <tr>
+      <th>ID</th>
+      <th>Tên bệnh nhân</th>
+      <th>Số điện thoại</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in patients %}
+    <tr>
+      <td>{{ p.id_benhnhan }}</td>
+      <td>{{ p.ten_benhnhan }}</td>
+      <td>{{ p.sodienthoai }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="3" class="text-center">Chưa có bệnh nhân nào.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
