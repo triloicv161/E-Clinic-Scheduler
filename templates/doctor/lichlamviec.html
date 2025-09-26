@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Lịch làm việc{% endblock %}
+
+{% block content %}
+<h3>Lịch làm việc của bạn</h3>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, msg in messages %}
+      <div class="alert alert-{{ category }} mt-2">{{ msg }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<!-- Form thêm ca làm việc -->
+<form method="POST" class="mb-4">
+  <div class="row g-2">
+    <div class="col-md-3">
+      <input type="date" name="ngay" class="form-control" required>
+    </div>
+    <div class="col-md-3">
+      <select name="batdau" class="form-control" required>
+        {% for h in range(8, 18) %}
+          <option value="{{ "%02d" % h }}">{{ "%02d" % h }}:00</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-3">
+      <select name="ketthuc" class="form-control" required>
+        {% for h in range(9, 19) %}
+          <option value="{{ "%02d" % h }}">{{ "%02d" % h }}:00</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-3">
+      <button type="submit" class="btn btn-primary">Thêm ca</button>
+    </div>
+  </div>
+</form>
+
+<!-- Danh sách ca làm việc -->
+<table class="table table-bordered">
+  <thead class="table-light">
+    <tr>
+      <th>#</th>
+      <th>Ngày</th>
+      <th>Giờ bắt đầu</th>
+      <th>Giờ kết thúc</th>
+      <th>Hành động</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% if slots %}
+      {% for slot in slots %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ slot.ngay }}</td>
+        <td>{{ slot.batdau }}</td>
+        <td>{{ slot.ketthuc if slot.ketthuc else '' }}</td>
+        <td>
+          <form method="POST" action="{{ url_for('doctor_schedule_delete', index=loop.index0) }}" style="display:inline;">
+            <button type="submit" class="btn btn-sm btn-danger"
+                    onclick="return confirm('Bạn có chắc muốn xóa ca này không?');">Xóa</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    {% else %}
+      <tr><td colspan="5" class="text-center">Chưa có ca làm việc nào.</td></tr>
+    {% endif %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}Danh sách bác sĩ{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <!-- Form tìm kiếm -->
+  <form method="get" class="row g-2 mb-4">
+    <div class="col-md-4">
+      <input type="text" name="q" value="{{ search_name or '' }}" class="form-control" placeholder="Tên bác sĩ">
+    </div>
+    <div class="col-md-4">
+      <select name="specialty" class="form-select">
+        <option value="">Chọn chuyên khoa</option>
+        {% for s in specialties %}
+        <option value="{{ s }}" {% if s == search_specialty %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-md-4">
+      <select name="address" class="form-select">
+        <option value="">Chọn địa chỉ</option>
+        {% for a in addresses %}
+        <option value="{{ a }}" {% if a == search_address %}selected{% endif %}>{{ a }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="col-12 text-end mt-2">
+      <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+    </div>
+  </form>
+
+  <!-- Header danh sách -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="mb-0">Danh sách bác sĩ</h4>
+    <small class="text-muted">Đang hiển thị: {{ doctors|length }} mục</small>
+  </div>
+
+  <!-- Danh sách bác sĩ -->
+  <div class="row g-4">
+    {% for doc in doctors %}
+    <div class="col-md-6 col-sm-6 col-12">
+      <div class="card h-100 shadow-sm p-3">
+        <div class="row g-2">
+
+          <!-- Ảnh bác sĩ -->
+          <div class="col-4 d-flex align-items-center justify-content-center">
+            <img
+              src="{% if doc.hinhanh %}{{ url_for('static', filename=doc.hinhanh) }}{% else %}{{ url_for('static', filename='images/appointment_detail.jpg') }}{% endif %}"
+              class="img-fluid rounded doctor-img"
+              alt="{{ doc.ten_bacsi }}">
+          </div>
+
+          <!-- Thông tin bác sĩ -->
+          <div class="col-8 d-flex flex-column justify-content-center">
+            <h5 class="card-title mb-1">{{ doc.ten_bacsi }}</h5>
+            <p class="card-text text-muted mb-1">{{ doc.mo_ta or 'Chưa cập nhật' }}</p>
+            <p class="card-text mb-2">
+              <small>
+                Chuyên khoa: {{ doc.chuyen_khoa or 'Chưa cập nhật' }} <br>
+                Kinh nghiệm: {{ doc.kinh_nghiem or 'Chưa cập nhật' }} <br>
+                Địa chỉ: {{ doc.dia_chi or 'Chưa cập nhật' }}
+              </small>
+            </p>
+            <a href="{{ url_for('doctor_detail', doctor_id=doc.id_bacsi) }}"
+               class="btn btn-primary btn-sm mt-auto">
+              Xem chi tiết
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <p>Chưa có bác sĩ nào.</p>
+    {% endfor %}
+  </div>
+
+  <!-- Phân trang -->
+  {% if total_pages > 1 %}
+  <nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+      {% if page > 1 %}
+      <li class="page-item">
+        <a class="page-link" href="{{ url_for('doctor_list', page=page-1, q=search_name, specialty=search_specialty, address=search_address) }}">Trước</a>
+      </li>
+      {% endif %}
+
+      {% for p in range(1, total_pages + 1) %}
+      <li class="page-item {% if p == page %}active{% endif %}">
+        <a class="page-link" href="{{ url_for('doctor_list', page=p, q=search_name, specialty=search_specialty, address=search_address) }}">{{ p }}</a>
+      </li>
+      {% endfor %}
+
+      {% if page < total_pages %}
+      <li class="page-item">
+        <a class="page-link" href="{{ url_for('doctor_list', page=page+1, q=search_name, specialty=search_specialty, address=search_address) }}">Sau</a>
+      </li>
+      {% endif %}
+    </ul>
+  </nav>
+  {% endif %}
+
+</div>
+{% endblock %}

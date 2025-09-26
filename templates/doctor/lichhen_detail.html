@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Chi tiết lịch hẹn{% endblock %}
+
+{% block content %}
+<h3>Chi tiết lịch hẹn</h3>
+
+<p><strong>Bệnh nhân:</strong> {{ lichhen.ten_benhnhan }}</p>
+<p><strong>Số điện thoại:</strong> {{ lichhen.sodienthoai }}</p>
+<p><strong>Người tạo:</strong> {{ lichhen.nguoi_tao }} ({{ lichhen.email }})</p>
+<p><strong>Ngày giờ hẹn:</strong> {{ lichhen.ThoiGianHen }}</p>
+<p><strong>Trạng thái:</strong> {{ lichhen.trang_thai }}</p>
+
+<hr>
+<h5>Ghi chú</h5>
+<form method="POST" action="{{ url_for('doctor_update_appointment_note', id_lichhen=lichhen.id_lichhen) }}">
+    <div class="mb-3">
+        <textarea name="ghichu" class="form-control" rows="4" placeholder="Nhập ghi chú">{{ lichhen.ghichu }}</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Lưu ghi chú</button>
+</form>
+
+<a href="{{ url_for('doctor_dashboard') }}" class="btn btn-secondary mt-3">Quay lại Dashboard</a>
+{% endblock %}
